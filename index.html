@@ -4,48 +4,50 @@
 
 <head>
 <meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Attendance Manager Dashboard</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
 
 body{
-font-family:'Poppins',sans-serif;
 margin:0;
-background:linear-gradient(135deg,#1e3c72,#2a5298);
+font-family:Arial, Helvetica, sans-serif;
+background:linear-gradient(135deg,#1d2671,#c33764);
 color:white;
-text-align:center;
 }
 
 header{
+text-align:center;
 font-size:32px;
-font-weight:600;
+font-weight:bold;
 padding:25px;
+}
+
+.container{
+width:90%;
+max-width:1100px;
+margin:auto;
 }
 
 .dashboard{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
 gap:20px;
-padding:40px;
-max-width:1000px;
-margin:auto;
+margin-top:20px;
 }
 
 .card{
-background:rgba(255,255,255,0.1);
-padding:25px;
-border-radius:12px;
-backdrop-filter:blur(8px);
-box-shadow:0 6px 20px rgba(0,0,0,0.3);
+background:rgba(255,255,255,0.15);
+padding:20px;
+border-radius:10px;
+backdrop-filter:blur(10px);
+box-shadow:0 5px 15px rgba(0,0,0,0.3);
+text-align:center;
 }
 
 .card h3{
-margin-bottom:10px;
+margin:10px 0;
 }
 
 .card p{
@@ -53,36 +55,26 @@ font-size:14px;
 opacity:0.9;
 }
 
-#output{
-width:90%;
+.console{
+margin-top:30px;
+}
+
+textarea{
+width:100%;
 height:300px;
-margin:30px auto;
-display:block;
 background:black;
-color:#00ff9d;
-padding:15px;
+color:#00ff90;
+border:none;
 border-radius:10px;
+padding:15px;
 font-family:monospace;
+font-size:14px;
 }
 
-.spinner{
-height:30px;
-width:30px;
-border:5px solid #ddd;
-border-top:5px solid #00c6ff;
-border-radius:50%;
-animation:spin 1s linear infinite;
-margin:auto;
-display:none;
-}
-
-@keyframes spin{
-0%{transform:rotate(0deg);}
-100%{transform:rotate(360deg);}
-}
-
-canvas{
-display:none;
+.footer{
+text-align:center;
+margin-top:30px;
+opacity:0.8;
 }
 
 </style>
@@ -95,16 +87,76 @@ display:none;
 Attendance Manager System
 </header>
 
+<div class="container">
+
 <div class="dashboard">
 
 <div class="card">
 <h3>Add Student</h3>
-<p>Add new students to the system.</p>
+<p>Register new students into the attendance system</p>
 </div>
 
 <div class="card">
 <h3>Mark Attendance</h3>
-<p>Record daily attendance.</p>
+<p>Record attendance for each class session</p>
 </div>
+
+<div class="card">
+<h3>Display Students</h3>
+<p>View all student attendance records</p>
+</div>
+
+<div class="card">
+<h3>Attendance Shortage</h3>
+<p>Students below 75% attendance</p>
+</div>
+
+<div class="card">
+<h3>Class Report</h3>
+<p>View class average attendance</p>
+</div>
+
+</div>
+
+<div class="console">
+
+<h2>C Program Output</h2>
+
+<textarea id="output" readonly></textarea>
+
+</div>
+
+<div class="footer">
+C Mini Project • Attendance Manager
+</div>
+
+</div>
+
+<script>
+
+var Module = {
+print: function(text){
+var output=document.getElementById("output");
+output.value += text + "\n";
+output.scrollTop = output.scrollHeight;
+},
+
+printErr: function(text){
+console.error(text);
+},
+
+canvas:(function(){
+var canvas=document.createElement("canvas");
+return canvas;
+})()
+
+};
+
+</script>
+
+<script src="index.js"></script>
+
+</body>
+</html>
 ```
 
