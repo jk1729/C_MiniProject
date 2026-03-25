@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Attendance Manager</title>
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+/* 🌌 GALAXY BACKGROUND */
+body {
+    background: radial-gradient(circle at top, #1a1a2e, #0f3460, #000000);
+    color: white;
+}
+
+/* ✨ STAR EFFECT */
+body::before {
+    content: "";
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: transparent url("https://www.transparenttextures.com/patterns/stardust.png");
+    opacity: 0.4;
+    z-index: -1;
+}
+
+/* TERMINAL HEIGHT */
+#output { height: 400px; }
+</style>
+</head>
+
+<body class="font-sans">
+
+<div class="max-w-5xl mx-auto p-6">
+
+    <!-- HEADER -->
+    <header class="mb-8 border-b pb-4 border-gray-600">
+        <h1 class="text-3xl font-extrabold text-blue-400">
+            🎓 Attendance Manager
+        </h1>
+        <p class="text-gray-300">WebAssembly Project</p>
+    </header>
+
+    <main class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+        <!-- LEFT PANEL -->
+        <section class="space-y-6">
+
+            <div class="bg-gray-900 p-6 rounded-xl shadow border border-gray-700">
+                <h2 class="text-lg font-bold mb-4 text-white">Actions</h2>
+
+                <div class="space-y-3">
+
+                    <!-- ✅ MENU FIRST -->
+                    <button onclick="showMenu()" class="w-full bg-gray-700 text-white py-2 rounded-lg">
+                        Show Menu
+                    </button>
+
+                    <button onclick="startAdd()" class="w-full bg-blue-600 text-white py-2 rounded-lg">
+                        Add Student
+                    </button>
+
+                    <button onclick="startMark()" class="w-full bg-green-600 text-white py-2 rounded-lg">
+                        Mark Attendance
+                    </button>
+
+                    <button onclick="fullReport()" class="w-full bg-purple-600 text-white py-2 rounded-lg">
+                        Full Report
+                    </button>
+
+                    <button onclick="shortage()" class="w-full bg-yellow-500 text-black py-2 rounded-lg">
+                        Shortage List
+                    </button>
+
+                    <button onclick="needed()" class="w-full bg-red-500 text-white py-2 rounded-lg">
+                        Classes Needed
+                    </button>
+
+                    <button onclick="average()" class="w-full bg-indigo-600 text-white py-2 rounded-lg">
+                        Class Average
+                    </button>
+
+                    <hr class="my-2 border-gray-600">
+
+                    <button onclick="searchStudent()" class="w-full bg-orange-500 text-white py-2 rounded-lg">
+                        Search Student
+                    </button>
+
+                    <button onclick="deleteStudent()" class="w-full bg-gray-800 text-white py-2 rounded-lg">
+                        Delete Student
+                    </button>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- RIGHT PANEL -->
+        <section class="lg:col-span-2">
+
+            <div class="bg-black rounded-xl shadow-2xl border border-gray-700 overflow-hidden">
+
+                <!-- TERMINAL HEADER -->
+                <div class="bg-gray-800 px-4 py-2 flex justify-between items-center">
+                    <span class="text-xs text-gray-400 font-mono">Terminal Output</span>
+
+                    <!-- 🔥 CLEAR BUTTON -->
+                    <button onclick="clearOutput()" class="bg-red-600 text-white px-3 py-1 text-xs rounded">
+                        Clear
+                    </button>
+                </div>
+
+                <!-- OUTPUT -->
+                <textarea id="output" readonly
+                class="w-full bg-black p-4 text-green-400 font-mono text-sm resize-none"></textarea>
+
+                <!-- INPUT -->
+                <div class="flex border-t border-gray-700">
+                    <input id="input" type="text"
+                        class="flex-1 p-3 bg-black text-white outline-none"
+                        placeholder="Enter input...">
+
+                    <button onclick="sendInput()"
+                        class="bg-blue-600 text-white px-5">
+                        Send
+                    </button>
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+</div>
+
+<script>
+    // ===================== PRINT OUTPUT =====================
+    function print(text){
+        let out = document.getElementById("output");
+        out.value += text + "\n";
+        out.scrollTop = out.scrollHeight;
+    }
+
+    // 🔥 CLEAR OUTPUT FUNCTION
+    function clearOutput(){
+        document.getElementById("output").value = "";
+    }
+
+    // ===================== BUTTON FUNCTIONS =====================
+    function startAdd(){ Module.ccall('startAddStudent'); }
+    function startMark(){ Module.ccall('startMarkAttendance'); }
+    function deleteStudent(){ Module.ccall('deleteStudent'); }
+    function searchStudent(){ Module.ccall('searchStudent'); }
+    function fullReport(){ Module.ccall('fullReport'); }
+    function shortage(){ Module.ccall('shortageReport'); }
+    function needed(){ Module.ccall('classesNeeded'); }
+    function average(){ Module.ccall('classAverage'); }
+    function showMenu(){ Module.ccall('showMenu'); }
+
+    // ===================== INPUT HANDLER =====================
+    function sendInput(){
+        let val = document.getElementById("input").value;
+        if(val.trim() === "") return;
+
+        print(">>> " + val);
+        Module.ccall('handleInput', null, ['string'], [val]);
+        document.getElementById("input").value = "";
+    }
+
+    document.getElementById("input").addEventListener("keypress", function(e){
+        if(e.key === "Enter") sendInput();
+    });
+
+    // ===================== WASM MODULE =====================
+    var Module = {
+        print: function(text){
+            print(text);
+        }
+    };
+</script>
+
+<script src="index.js"></script>
+</body>
+</html>
